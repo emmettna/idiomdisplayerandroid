@@ -21,7 +21,6 @@ public class Control  {
         sc = new Scanner(input);
         while (sc.hasNext()) {
             String line = sc.nextLine();
-            System.out.println(line);
             String[] array = line.split(":");
             String english = array[0];
             String korean = array[1];

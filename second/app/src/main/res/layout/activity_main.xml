@@ -67,6 +67,20 @@
             app:layout_constraintTop_toBottomOf="@+id/next"
             tools:layout_editor_absoluteX="274dp" />
 
+        <Button
+            android:id="@+id/NotificationOn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="NotificationOn"
+            android:onClick="showNotification"/>
+
+        <Button
+            android:id="@+id/setAlarm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="setAlarm"
+            android:onClick="setAlarm"/>
+
     </LinearLayout>
 
 </FrameLayout>
