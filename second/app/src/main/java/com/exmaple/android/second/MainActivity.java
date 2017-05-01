@@ -1,18 +1,18 @@
 package com.exmaple.android.second;
 
-import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
+import java.util.Date;
 import java.util.Random;
 
 
@@ -22,33 +22,47 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> arr = control.getList();
     TextView engIdiom;
     TextView korIdiom;
+    CheckBox checkBox;
     Random ran = new Random();
     int randNum;
     ArrayList<Integer> stack = new ArrayList<>();
+    Intent pushIntent;
+    NotificationCompat.Builder notification;
+    private static final int uniqueID= (int) new Date().getTime();
+    private int timer = 1000;
 
-
-    NotificationCompat.Builder nnotification;
-    private static final int uniqueID= 3414;
+    private Handler handler;
+    private Runnable runnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        disabling Notification bar
+//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         engIdiom = (TextView) findViewById(R.id.engIdiom);
         korIdiom = (TextView) findViewById(R.id.korIdiom);
+        checkBox = (CheckBox) findViewById(R.id.stayOnLockScreen);
         _getRandNum();
         setTexts();
         push();
-        nnotification = new NotificationCompat.Builder(this);
-        nnotification.setAutoCancel(true);
+        notification = new NotificationCompat.Builder(this);
+        notification.setAutoCancel(true);
+        pushIntent = new Intent(this,PushService.class);
+
     }
-
-    public void onNextButtonClick(View view) {
+    public void nextIdiom(){
         _getRandNum();
         setTexts();
         push();
-        System.out.println(arr.get(randNum));
-
+    }
+    public void onNextButtonClick(View view) {
+        nextIdiom();
+//        Log.d("zzz","Got to nextIdiom before checkbox");
+        if ( checkBox.isChecked() ) {
+//            Log.d("zzz","inside if statement");
+            showNotification();
+        }
     }
 
     public void onPreviousButtonClick(View view) {
@@ -57,10 +71,7 @@ public class MainActivity extends AppCompatActivity {
         setTexts();
         pop();
         }
-        System.out.println(randNum);
     }
-
-
 
     public void _getRandNum(){
         randNum = ran.nextInt(arr.size()-1);
@@ -68,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setTexts(){
-        System.out.println("ran num is "+randNum);
         if(randNum%2!=0) randNum +=1;
         engIdiom.setText(arr.get(randNum));
         korIdiom.setText(arr.get(randNum + 1));
@@ -89,27 +99,47 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void showNotification(View view){
+    public void showNotification(){
 
-        nnotification.setSmallIcon(R.drawable.ntt) //or you can replace with ic_launcher.png
-            .setTicker("Gdaymate")
+        notification.setSmallIcon(R.drawable.iconimagecopy) //or you can replace with ic_launcher.png
+            .setTicker("New Idiom Up")
             .setWhen(System.currentTimeMillis())
-            .setContentTitle("Here is the Title")
-            .setContentText("this is the main text");
+            .setContentTitle(arr.get(randNum))
+            .setContentText(arr.get(randNum+1));
 
-        Intent iintent = new Intent(this, MainActivity.class);
-        PendingIntent ppendingintent = PendingIntent.getActivity(this,0,iintent,PendingIntent.FLAG_UPDATE_CURRENT);
-        nnotification.setContentIntent(ppendingintent);
+        Intent intent = new Intent(this, MainActivity.class);
+        PendingIntent pendingintent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        notification.setContentIntent(pendingintent);
 
         NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        nm.notify(uniqueID, nnotification.build());
+        nm.notify(uniqueID, notification.build());
 
     }
-    public void setAlarm(View view){
-        Long alertTime = new GregorianCalendar().getTimeInMillis()+5*1000;
-        Intent alertIntent = new Intent(this, AlertReceiver.class);
-        AlarmManager alarmManager = (AlarmManager)
-                getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime,PendingIntent.getBroadcast(this,1,alertIntent,PendingIntent.FLAG_UPDATE_CURRENT));
+    /* Currently timer is 10 minutes base but can add setTime button*/
+
+    public void stayOnLockScreen(View view) {
+        if ( ((CheckBox)view).isChecked() ) {
+            showNotification();
+            notification.setAutoCancel(false);
+//            startService(pushIntent);
+
+            timer = 100000;
+            handler = new Handler();
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    showNotification();
+                    handler.postDelayed(this,timer);
+                    nextIdiom();
+                    showNotification();
+                }
+            };
+            handler.postDelayed(runnable,timer);
+        }
+        else{
+            notification.setAutoCancel(true);
+//            stopService(pushIntent);
+            handler.removeCallbacks(runnable);
+        }
     }
 }

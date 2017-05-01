@@ -14,7 +14,6 @@ public class Control  {
 
     Control(){
         list = new ArrayList<>();
-//        AssetManager assetManager = getAssets();
         input = this.getClass().getClassLoader().getResourceAsStream("assets/idioms.txt");
 
         Scanner sc = null;
@@ -28,7 +27,6 @@ public class Control  {
             list.add(korean);
         }
         sc.close();
-
 
     }
     public ArrayList<String> getList(){

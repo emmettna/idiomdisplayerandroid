@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/cutecloud"
     tools:context="com.exmaple.android.second.MainActivity">
 
     <LinearLayout
@@ -16,6 +17,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="english Idiom"
+            android:textSize="25sp"
+            android:textColor="@color/Black"
+            android:padding="10dp"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.052"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -29,6 +34,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:text="korean Idiom"
+            android:textSize="18sp"
+            android:padding="10dp"
             app:layout_constraintTop_toBottomOf="@+id/engIdiom2"
             tools:layout_editor_absoluteX="16dp" />
 
@@ -43,8 +50,11 @@
                 android:layout_height="wrap_content"
                 android:onClick="onPreviousButtonClick"
                 android:text="previous"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="8dp" />
+                android:layout_marginLeft="16dp"
+                android:background="@drawable/rounded_corner"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="8dp" />
 
             <Button
                 android:id="@+id/next"
@@ -54,32 +64,21 @@
                 android:layout_marginTop="-8dp"
                 android:onClick="onNextButtonClick"
                 android:text="next"
+                android:background="@drawable/rounded_corner"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/previous" />
         </android.support.constraint.ConstraintLayout>
 
         <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/stayOnLockScreen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="stay on Lock scrreen"
+            android:text="Stay on Lock screen Changing Every 10 Mins"
+            android:onClick="stayOnLockScreen"
             app:layout_constraintTop_toBottomOf="@+id/next"
             tools:layout_editor_absoluteX="274dp" />
 
-        <Button
-            android:id="@+id/NotificationOn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="NotificationOn"
-            android:onClick="showNotification"/>
-
-        <Button
-            android:id="@+id/setAlarm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="setAlarm"
-            android:onClick="setAlarm"/>
 
     </LinearLayout>
 
