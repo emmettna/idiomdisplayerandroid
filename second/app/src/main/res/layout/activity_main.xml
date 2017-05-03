@@ -74,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="Stay on Lock screen Changing Every 10 Mins"
+            android:text="Stay on Lock screen and Change Every 10 Mins"
             android:onClick="stayOnLockScreen"
             app:layout_constraintTop_toBottomOf="@+id/next"
             tools:layout_editor_absoluteX="274dp" />

@@ -8,16 +8,13 @@ import java.util.Scanner;
  * Created by emmettna on 15/4/17.
  */
 
-public class Control  {
-    ArrayList<String> list;
-    InputStream input;
+class Control  {
+    private ArrayList<String> list;
 
     Control(){
         list = new ArrayList<>();
-        input = this.getClass().getClassLoader().getResourceAsStream("assets/idioms.txt");
-
-        Scanner sc = null;
-        sc = new Scanner(input);
+        InputStream input = this.getClass().getClassLoader().getResourceAsStream("assets/idioms.txt");
+        Scanner sc = new Scanner(input);
         while (sc.hasNext()) {
             String line = sc.nextLine();
             String[] array = line.split(":");
@@ -29,7 +26,7 @@ public class Control  {
         sc.close();
 
     }
-    public ArrayList<String> getList(){
+    ArrayList<String> getList(){
         return list;
     }
 
